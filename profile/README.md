@@ -44,7 +44,7 @@
 ## **Brand Identity**
 
 ### **Logo**
-![PepperTech Logo]([attachment:eebddc0a-4ac6-442f-bb36-96bd62742645:PapperTech_logo_colored_text.png](https://img.notionusercontent.com/s3/prod-files-secure%2Fbdb3cd24-e813-4afe-b347-4ea008b60ced%2Feebddc0a-4ac6-442f-bb36-96bd62742645%2FPapperTech_logo_colored_text.png/size/w=1250?exp=1741970939&sig=6_CZ6B4-b03Isnst6fR2964pN_V7m2q3qICcUC73Ly4))
+![PepperTech Logo](https://avatars.githubusercontent.com/u/199486626?s=96&v=4)
 
 ### **Color Palette**
 
