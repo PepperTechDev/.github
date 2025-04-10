@@ -1,0 +1,61 @@
+services:
+  # Servicio para la base de datos MongoDB
+  db-peppercrm:
+    image: sebastian190030/db-peppercrm:latest
+    container_name: peppercrm-db
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - peppercrm-network
+
+  # Servicio para la API
+  api-peppercrm:
+    image: sebastian190030/api-peppercrm:latest
+    container_name: peppercrm-api
+    environment:
+      - APP_NAME=PepperCRM-API
+      - PORT=8091
+      - TITLE=peppercrm API
+      - DESCRIPTION=Documentación de la API REST de PepperCRM
+      - VERSION=1.0.0
+      - AUTHOR=peppercrm Developers
+      - DATA_CONNECTION_METHOD=mongodb
+      - DATA_SOURCE_USERNAME=admin
+      - DATA_SOURCE_PASSWORD=admin
+      - DATA_SOURCE_DOMAIN=db-peppercrm:27017
+      - DATA_SOURCE_DB=peppercrm
+      - DATA_PARAMS=authSource=admin&directConnection=true&serverSelectionTimeoutMS=100000&socketTimeoutMS=10000&appName=mongo
+      - SECURITY_JWT_SECRET_KEY=c8e9b6803afbcfa6edd9569c94c75ff4b144622b0a0570a636dffd62c24a3476
+      - SECURITY_JWT_EXPIRATION=86400000
+      - SECURITY_PUBLIC_ROUTES=/auth/login,/auth/verify
+      - HEADER_CORS_ALLOWED_ORIGINS=http://localhost:5173
+      - SERVER_TOMCAT_TIMEOUT=600000
+      - DEBUGGER_MODE=INFO
+    ports:
+      - "8091:8091"
+    depends_on:
+      - db-peppercrm
+    networks:
+      - peppercrm-network
+
+  # Servicio para la aplicación web
+  web-peppercrm:
+    image: sebastian190030/web-peppercrm:latest
+    container_name: peppercrm-web
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8091
+    ports:
+      - "5173:5173"
+    networks:
+      - peppercrm-network
+
+# Volúmenes para persistencia de datos
+volumes:
+  mongo_data:
+
+# Red de contenedores para comunicación entre servicios
+networks:
+  peppercrm-network:
+    driver: bridge
