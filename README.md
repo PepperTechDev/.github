@@ -1,43 +1,43 @@
-# 🌶️ PepperCRM - Entorno de Desarrollo Local
+# 🌶️ PepperCRM - Local Development Environment
 
-Este repositorio contiene el código fuente del proyecto **PepperCRM**, una solución CRM moderna y modular diseñada para gestionar clientes, ventas y oportunidades de negocio.
+This repository contains the source code for the **PepperCRM** project, a modern and modular CRM solution designed to manage clients, sales, and business opportunities.
 
-Puedes ejecutar este proyecto localmente utilizando dos enfoques:
+You can run this project locally using two approaches:
 
 ---
 
-## 🚀 Opciones de Ejecución
+## 🚀 Execution Options
 
-### ✅ Opción 1: Ejecución con Docker
+### ✅ Option 1: Run with Docker
 
-Para una configuración rápida y estandarizada mediante **Docker** y **Docker Compose**, sigue la guía específica:
+For a quick and standardized setup using **Docker** and **Docker Compose**, follow the specific guide:
 
 📁 [`docker/README.md`](docker/README.md)
 
-Esta opción es ideal para desarrollo local, testing y entornos de staging.
+This option is ideal for local development, testing, and staging environments.
 
 ---
 
-### ☸️ Opción 2: Ejecución con Kubernetes
+### ☸️ Option 2: Run with Kubernetes
 
-Si prefieres trabajar con **Kubernetes** para orquestación y escalabilidad, puedes consultar las instrucciones detalladas en:
+If you prefer working with **Kubernetes** for orchestration and scalability, you can check the detailed instructions at:
 
-> ⚠️ **Advertencia:** El despliegue con **Kubernetes** aún se encuentra en desarrollo. Algunas funcionalidades podrían no estar disponibles o completamente configuradas.
+> ⚠️ **Warning:** Deployment with **Kubernetes** is still under development. Some features may not be available or fully configured.
 
-Puedes consultar las instrucciones preliminares en:
+You can check the preliminary instructions at:
 
 📁 [`kubernetes/README.md`](kubernetes/README.md)
 
-Recomendada para entornos de producción o despliegues avanzados en la nube.
+Recommended for production environments or advanced cloud deployments.
 
 ---
 
-## 🧩 Estructura del Proyecto
+## 🧩 Project Structure
 
-PepperCRM se compone de los siguientes servicios:
+PepperCRM is composed of the following services:
 
-| Servicio          | Descripción                                                                 |
-|-------------------|-----------------------------------------------------------------------------|
-| **DB PepperCRM**  | Base de datos de mongoDB utilizada para almacenar la información del CRM.   |
-| **API PepperCRM**  | Backend que expone la lógica del sistema y los endpoints RESTful.           |
-| **Web PepperCRM**  | Aplicación frontend que permite la interacción visual con el sistema.       |
+| Service           | Description                                                                  |
+|-------------------|------------------------------------------------------------------------------|
+| **DB PepperCRM**  | MongoDB database used to store the CRM information.                          |
+| **API PepperCRM** | Backend that exposes the system's logic and RESTful endpoints.               |
+| **Web PepperCRM** | Frontend application that allows visual interaction with the system.         |
