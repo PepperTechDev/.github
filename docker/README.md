@@ -1,45 +1,45 @@
-# 📦 **Demostración Local de PepperCRM con Docker**
+# 📦 **Local Demonstration of PepperCRM with Docker**
 
-Esta guía explica cómo ejecutar **PepperCRM** localmente usando Docker y Docker Compose. Incluye los requisitos, instrucciones rápidas y detalladas para levantar los servicios, además de una descripción completa de la infraestructura definida en el archivo `docker-compose.yml`.
+This guide explains how to run **PepperCRM** locally using Docker and Docker Compose. It includes prerequisites, quick and detailed setup instructions, and a complete description of the infrastructure defined in the `docker-compose.yml` file.
 
 ---
 
-## ✅ **Requisitos Previos**
+## ✅ **Prerequisites**
 
-Antes de comenzar, asegúrate de tener instalado lo siguiente:
+Before getting started, make sure you have the following installed:
 
 - **Docker**  
-  👉 [Guía de instalación oficial](https://docs.docker.com/get-docker/)
+  👉 [Official installation guide](https://docs.docker.com/get-docker/)
   
 - **Docker Compose**  
-  👉 [Guía de instalación oficial](https://docs.docker.com/compose/install/)  
-  > Si estás usando Docker Desktop, Docker Compose ya viene incluido.
+  👉 [Official installation guide](https://docs.docker.com/compose/install/)  
+  > If you're using Docker Desktop, Docker Compose is already included.
 
 ---
 
-## 🚀 **Cómo Ejecutar el Proyecto**
+## 🚀 **How to Run the Project**
 
-> ⚠️ **Nota:** Asegúrate de que Docker esté corriendo antes de ejecutar cualquier comando.
+> ⚠️ **Note:** Make sure Docker is running before executing any commands.
 
-### 🔹 **Opción 1: Ejecución Rápida (One-liner)**
+### 🔹 **Option 1: Quick Run (One-liner)**
 
-Este método es ideal si quieres levantar todo en un solo paso desde la terminal:
+This method is ideal if you want to bring everything up in a single step from the terminal:
 
 ```bash
 curl -L https://raw.githubusercontent.com/PepperTechDev/.github/main/docker/docker-compose.yml -o docker-compose.yml && docker-compose -p peppercrm up -d
 ```
 
-🔧 Este comando:
-- Descarga automáticamente el archivo `docker-compose.yml`
-- Inicia los contenedores en segundo plano con el proyecto `peppercrm`
+🔧 This command:
+- Automatically downloads the `docker-compose.yml` file
+- Starts the containers in detached mode using the project name `peppercrm`
 
-📍 Servicios disponibles:
+📍 Available services:
 
 - 🔗 **MongoDB**: `mongodb://admin:admin@localhost:27018/peppercrm/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongo`
 - 🔗 **API**: `http://localhost:8091`
-- 🔗 **Frontend Web**: `http://localhost:5173`
+- 🔗 **Web Frontend**: `http://localhost:5173`
 
-🛑 Para detener los servicios:
+🛑 To stop the services:
 
 ```bash
 docker-compose -p peppercrm down
@@ -47,17 +47,17 @@ docker-compose -p peppercrm down
 
 ---
 
-### 🔹 **Opción 2: Ejecución Paso a Paso**
+### 🔹 **Option 2: Step-by-Step Execution**
 
-Ideal si prefieres tener más control sobre cada etapa.
+Ideal if you prefer more control over each step.
 
-#### 📥 Paso 1: Descargar el archivo `docker-compose.yml`
+#### 📥 Step 1: Download the `docker-compose.yml` file
 
 ```bash
 curl -L https://raw.githubusercontent.com/peppercrmTech/.github/main/docker-compose.yml -o docker-compose.yml
 ```
 
-#### 🧱 Paso 2: Descargar las imágenes Docker
+#### 🧱 Step 2: Pull Docker images
 
 ```bash
 docker pull sebastian190030/db-peppercrm:latest
@@ -65,19 +65,19 @@ docker pull sebastian190030/api-peppercrm:latest
 docker pull sebastian190030/web-peppercrm:latest
 ```
 
-#### 🚀 Paso 3: Levantar los contenedores
+#### 🚀 Step 3: Start the containers
 
 ```bash
 docker-compose -p peppercrm up -d
 ```
 
-#### 🌐 Paso 4: Acceder a los servicios
+#### 🌐 Step 4: Access the services
 
 - 🗃️ **MongoDB**: `mongodb://admin:admin@localhost:27018/peppercrm/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongo`
 - 🛠️ **API**: `http://localhost:8091`
 - 🌍 **Web**: `http://localhost:5173`
 
-#### 🛑 Paso 5: Detener los servicios
+#### 🛑 Step 5: Stop the services
 
 ```bash
 docker-compose -p peppercrm down
@@ -85,19 +85,19 @@ docker-compose -p peppercrm down
 
 ---
 
-## 🗂️ **Estructura del Proyecto**
+## 🗂️ **Project Structure**
 
-El archivo `docker-compose.yml` orquesta los siguientes servicios:
+The `docker-compose.yml` file orchestrates the following services:
 
-| Servicio          | Descripción                                                        |
-|-------------------|--------------------------------------------------------------------|
-| **MongoDB**        | Base de datos que almacena toda la información de la aplicación. |
-| **API (Backend)**  | Servicio RESTful que expone la lógica del sistema.               |
-| **Web (Frontend)** | Interfaz de usuario que consume los servicios de la API.         |
+| Service            | Description                                                        |
+|--------------------|--------------------------------------------------------------------|
+| **MongoDB**         | Database that stores all application data.                        |
+| **API (Backend)**   | RESTful service exposing the system's business logic.             |
+| **Web (Frontend)**  | User interface that consumes the API services.                    |
 
 ---
 
-## 📄 **Contenido del docker-compose.yml**
+## 📄 **docker-compose.yml Contents**
 
 ### 🔸 1. **MongoDB**
 ```yaml
@@ -111,8 +111,8 @@ db-peppercrm:
   networks:
     - peppercrm-network
 ```
-- 📦 Volumen persistente: `mongo_data`
-- 🌐 Puerto expuesto: `27018`
+- 📦 Persistent volume: `mongo_data`
+- 🌐 Exposed port: `27018`
 
 ---
 
@@ -131,7 +131,7 @@ api-peppercrm:
     - SECURITY_JWT_SECRET_KEY=c8e9b6803afbcfa6edd9569c94c75ff4b144622b0a0570a636dffd62c24a3476
     - SECURITY_JWT_EXPIRATION=86400000
     - HEADER_CORS_ALLOWED_ORIGINS=http://localhost:5173
-    # ...otras variables omitidas por brevedad
+    # ...other variables omitted for brevity
   ports:
     - "8091:8091"
   depends_on:
@@ -139,8 +139,8 @@ api-peppercrm:
   networks:
     - peppercrm-network
 ```
-- 🔐 Configura JWT y CORS
-- 🧱 Se asegura que MongoDB esté listo antes de levantar la API (`depends_on`)
+- 🔐 Configures JWT and CORS
+- 🧱 Ensures MongoDB is ready before launching the API (`depends_on`)
 
 ---
 
@@ -156,34 +156,34 @@ web-peppercrm:
   networks:
     - peppercrm-network
 ```
-- ⚙️ `VITE_API_BASE_URL`: Base para llamadas a la API
-- 🌐 Accesible desde el navegador: `http://localhost:5173`
+- ⚙️ `VITE_API_BASE_URL`: Base URL for API calls
+- 🌐 Accessible from browser: `http://localhost:5173`
 
 ---
 
-### 🔸 4. **Volúmenes**
+### 🔸 4. **Volumes**
 ```yaml
 volumes:
   mongo_data:
 ```
-Usado por MongoDB para almacenamiento persistente.
+Used by MongoDB for persistent storage.
 
 ---
 
-### 🔸 5. **Redes**
+### 🔸 5. **Networks**
 ```yaml
 networks:
   peppercrm-network:
     driver: bridge
 ```
-Permite la comunicación entre los servicios internos de la aplicación.
+Allows communication between internal services in the application.
 
 ---
 
-## 🧾 **Resumen de Accesos**
+## 🧾 **Access Summary**
 
-| Servicio        | URL de Acceso                          |
-|-----------------|----------------------------------------|
-| MongoDB         | `mongodb://admin:admin@localhost:27018/peppercrm/...` |
-| API Backend     | `http://localhost:8091`                |
-| Web Frontend    | `http://localhost:5173`                |
+| Service        | Access URL                                             |
+|----------------|--------------------------------------------------------|
+| MongoDB        | `mongodb://admin:admin@localhost:27018/peppercrm/...` |
+| API Backend    | `http://localhost:8091`                                |
+| Web Frontend   | `http://localhost:5173`                                |
