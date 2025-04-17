@@ -63,6 +63,7 @@ curl -L https://raw.githubusercontent.com/peppercrmTech/.github/main/docker-comp
 docker pull sebastian190030/db-peppercrm:latest
 docker pull sebastian190030/api-peppercrm:latest
 docker pull sebastian190030/web-peppercrm:latest
+docker pull sebastian190030/cache-peppercrm:latest
 ```
 
 #### 🚀 Step 3: Start the containers
@@ -74,6 +75,7 @@ docker-compose -p peppercrm up -d
 #### 🌐 Step 4: Access the services
 
 - 🗃️ **MongoDB**: `mongodb://admin:admin@localhost:27018/peppercrm/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongo`
+- 🔗 **Redis**: `redis://localhost:6379`
 - 🛠️ **API**: `http://localhost:8091`
 - 🌍 **Web**: `http://localhost:5173`
 
@@ -92,8 +94,10 @@ The `docker-compose.yml` file orchestrates the following services:
 | Service            | Description                                                        |
 |--------------------|--------------------------------------------------------------------|
 | **MongoDB**         | Database that stores all application data.                        |
+| **Redis (Cache)**   | In-memory key-value store for caching and session data.           |
 | **API (Backend)**   | RESTful service exposing the system's business logic.             |
 | **Web (Frontend)**  | User interface that consumes the API services.                    |
+
 
 ---
 
@@ -118,26 +122,48 @@ db-peppercrm:
 
 ### 🔸 2. **API Backend**
 ```yaml
-api-peppercrm:
-  image: sebastian190030/api-peppercrm:latest
-  container_name: peppercrm-api
-  environment:
-    - APP_NAME=peppercrm-API
-    - PORT=8091
-    - DATA_SOURCE_DOMAIN=db-peppercrm:27017
-    - DATA_SOURCE_USERNAME=admin
-    - DATA_SOURCE_PASSWORD=admin
-    - DATA_SOURCE_DB=peppercrm
-    - SECURITY_JWT_SECRET_KEY=c8e9b6803afbcfa6edd9569c94c75ff4b144622b0a0570a636dffd62c24a3476
-    - SECURITY_JWT_EXPIRATION=86400000
-    - HEADER_CORS_ALLOWED_ORIGINS=http://localhost:5173
-    # ...other variables omitted for brevity
-  ports:
-    - "8091:8091"
-  depends_on:
-    - db-peppercrm
-  networks:
-    - peppercrm-network
+  api-peppercrm:
+    image: sebastian190030/api-peppercrm:latest
+    container_name: peppercrm-api
+    environment:
+      - APP_NAME=PepperCRM-API
+      - PORT=8091
+      - TITLE=peppercrm API
+      - DESCRIPTION=Documentación de la API REST de PepperCRM
+      - VERSION=1.0.0
+      - AUTHOR=peppercrm Developers
+      - DATA_CONNECTION_METHOD=mongodb
+      - DATA_SOURCE_USERNAME=admin
+      - DATA_SOURCE_PASSWORD=admin
+      - DATA_SOURCE_DOMAIN=db-peppercrm:27017
+      - DATA_SOURCE_DB=peppercrm
+      - DATA_PARAMS=authSource=admin&directConnection=true&serverSelectionTimeoutMS=100000&socketTimeoutMS=10000&appName=mongo
+      - CACHE_TYPE=redis
+      - CACHE_HOST=cache-peppercrm
+      - CACHE_PORT=6379
+      - CACHE_DB=0
+      - CACHE_USERNAME=default
+      - CACHE_PASSWORD=redislocalpass
+      - CACHE_TIMEOUT=2000
+      - CACHE_LETTUCE_POOL_MAX_ACTIVE=8
+      - CACHE_LETTUCE_POOL_MAX_WAIT=-1
+      - CACHE_LETTUCE_POOL_MAX_IDLE=8
+      - CACHE_LETTUCE_POOL_MIN_IDLE=8
+      - CACHE_TIME_TO_LIVE=300000
+      - CACHE_NULL_VALUES=false
+      - SECURITY_JWT_SECRET_KEY=c8e9b6803afbcfa6edd9569c94c75ff4b144622b0a0570a636dffd62c24a3476
+      - SECURITY_JWT_EXPIRATION=86400000
+      - SECURITY_PUBLIC_ROUTES=/auth/login,/auth/verify
+      - HEADER_CORS_ALLOWED_ORIGINS=http://localhost:5173
+      - SERVER_TOMCAT_TIMEOUT=600000
+      - DEBUGGER_MODE=INFO
+    ports:
+      - "8091:8091"
+    depends_on:
+      - db-peppercrm
+      - cache-peppercrm
+    networks:
+      - peppercrm-network
 ```
 - 🔐 Configures JWT and CORS
 - 🧱 Ensures MongoDB is ready before launching the API (`depends_on`)
@@ -161,7 +187,23 @@ web-peppercrm:
 
 ---
 
-### 🔸 4. **Volumes**
+### 🔸 4. **Redis Cache**
+```yaml
+cache-peppercrm:
+  image: cache-peppercrm
+  container_name: peppercrm-cache
+  ports:
+    - "6379:6379"
+  networks:
+    - peppercrm-network
+```
+- ⚡ Exposes Redis on the default port `6379`
+- 🧠 Used by the API for caching and fast data access
+
+---
+
+
+### 🔸 5. **Volumes**
 ```yaml
 volumes:
   mongo_data:
@@ -170,7 +212,7 @@ Used by MongoDB for persistent storage.
 
 ---
 
-### 🔸 5. **Networks**
+### 🔸 6. **Networks**
 ```yaml
 networks:
   peppercrm-network:
