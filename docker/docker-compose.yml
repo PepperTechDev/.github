@@ -10,13 +10,23 @@ services:
     networks:
       - peppercrm-network
 
-  # Servicio para Redis
+  # Servicio para cache de Redis
   cache-peppercrm:
     image: cache-peppercrm
     container_name: peppercrm-cache
     ports:
       - "6379:6379"
     command: redis-server --requirepass redislocalpass
+    networks:
+      - peppercrm-network
+
+  # Servicio para correo de mailpit
+  mail-peppercrm:
+    image: sebastian190030/mail-peppercrm:latest
+    container_name: mail-peppercrm
+    ports:
+      - "8025:8025" # GUI port
+      - "1025:1025" # SMTP Port
     networks:
       - peppercrm-network
 
@@ -56,6 +66,12 @@ services:
       - HEADER_CORS_ALLOWED_ORIGINS=http://localhost:5173
       - SERVER_TOMCAT_TIMEOUT=600000
       - DEBUGGER_MODE=INFO
+      - MAIL_HOST=mailpit
+      - MAIL_PORT=1025
+      - MAIL_USERNAME=peppertechdev@example.com
+      - MAIL_PASSWORD=correo1234
+      - MAIL_PROPERTIES_SMTP_AUTH=true
+      - MAIL_PROPERTIES_SMTP_STARTTLS_ENABLE=false
     ports:
       - "8091:8091"
     depends_on:
