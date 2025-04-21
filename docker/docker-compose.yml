@@ -16,7 +16,6 @@ services:
     container_name: peppercrm-cache
     ports:
       - "6379:6379"
-    command: redis-server --requirepass redislocalpass
     networks:
       - peppercrm-network
 
