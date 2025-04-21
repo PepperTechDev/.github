@@ -12,7 +12,7 @@ services:
 
   # Servicio para cache de Redis
   cache-peppercrm:
-    image: cache-peppercrm
+    image: sebastian190030/cache-peppercrm
     container_name: peppercrm-cache
     ports:
       - "6379:6379"
