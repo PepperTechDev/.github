@@ -27,7 +27,7 @@ services:
       - "8025:8025" # GUI port
       - "1025:1025" # SMTP Port
     volumes:
-      - ./authfile:/app/authfile
+      - ./authfile:/etc/mailpit/authfile
     command: ["--smtp-auth-file=/app/authfile", "--smtp-auth-allow-insecure"]
     networks:
       - peppercrm-network
