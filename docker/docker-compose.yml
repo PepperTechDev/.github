@@ -77,7 +77,7 @@ services:
       - MAIL_HOST=mail-peppercrm
       - MAIL_PORT=1025
       - MAIL_USERNAME=peppertechdev@example.com
-      - MAIL_PASSWORD=correo1234
+      - MAIL_PASSWORD=password123
       - MAIL_PROPERTIES_SMTP_AUTH=true
       - MAIL_PROPERTIES_SMTP_STARTTLS_ENABLE=false
 
