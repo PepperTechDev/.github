@@ -69,7 +69,7 @@ services:
       - CACHE_NULL_VALUES=false
 
       # Email (usando mailpit en local)
-      - MAIL_HOST=mailpit
+      - MAIL_HOST=mail-peppercrm
       - MAIL_PORT=1025
       - MAIL_USERNAME=peppertechdev@example.com
       - MAIL_PASSWORD=correo1234
